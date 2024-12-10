@@ -6,10 +6,12 @@ from upaths import rsdata_dpath
 
 #data_name = "SENTINEL2"
 data_name = "SENTINEL1"
-to_dpath = f"{rsdata_dpath}/compressed/{data_name}"
 from_dpath = f"{rsdata_dpath}/data/{data_name}"
 
+
+to_dpath = f"{rsdata_dpath}/compressed/{data_name}"
 if __name__ == '__main__':
+    os.makedirs(to_dpath,exist_ok=True)
     tilenames = os.listdir(from_dpath)
     with ProcessPoolExecutor() as ppe:
         for tilename in tilenames:

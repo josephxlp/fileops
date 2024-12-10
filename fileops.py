@@ -4,23 +4,16 @@ import subprocess
 import shutil
 import tarfile
 from tqdm import tqdm
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor, as_completed
+import os
+import tarfile
+import gzip
+import shutil
+import subprocess
 
-path = '/home/ljp238/.local/share/Trash/'
-path = "/media/ljp238/12TBWolf/.Trash-1001"
-path = "/home/ljp238/.local/share/Trash/files"
-path = "/home/ljp238/.local/share/Trash/files//"
-
-
-def compress_to_tar(source_path, output_path):
-    with tarfile.open(output_path, "w:gz") as tar:
-        tar.add(source_path, arcname=os.path.basename(source_path))
-
-def tarfile_extractall(tar_path,outdir):
-    with tarfile.open(tar_path, 'r') as tf:
-        tf.extractall(path=outdir)
-    print('All files extracted')
-
+trash_paths = ["/media/ljp238/12TBWolf/.Trash",
+               "/home/ljp238/.local/share/Trash/",
+               "/home/ljp238/.local/share/Trash/files"]
 
 
 def copy_file(source, destination, threshold):
@@ -51,9 +44,6 @@ def move_file(source, destination, threshold):
       print("File copied successfully")
   except Exception as e:
       print(f"An error occurred while moving the file: {e}")
-
-
-
 
 
 def delete_file(file_path):
@@ -99,14 +89,6 @@ def remove_directory_and_files(directory_path):
 
 
 
-import os
-import tarfile
-import gzip
-import shutil
-import subprocess
-from concurrent.futures import ProcessPoolExecutor
-
-
 def delete_files_and_directories(directory):
     """
     Recursively deletes files and directories within the specified directory.
@@ -148,6 +130,8 @@ def copy_files(src, dst):
 
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
+
+
 
 def extract_tarball(source, destination):
     """
@@ -228,4 +212,7 @@ def tarfile_compress(source_path, output_path):
     with tarfile.open(output_path, "w:gz") as tar:
         tar.add(source_path, arcname=os.path.basename(source_path))
 
+def compress_to_tar(source_path, output_path):
+    with tarfile.open(output_path, "w:gz") as tar:
+        tar.add(source_path, arcname=os.path.basename(source_path))
 
